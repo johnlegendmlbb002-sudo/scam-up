@@ -32,18 +32,17 @@ export default function TopupComplete() {
 
         if (data?.success) {
           setStatus("success");
-          setMessage("Payment successful!");
-
+ setMessage("Oops… we couldn’t scam you 😔");
           // Optional cleanup
           localStorage.removeItem("pending_topup_order");
         } else {
           setStatus("failed");
-          setMessage("Payment failed or still pending");
+          setMessage("Mission failed. Try again next time 😏");
         }
       } catch (err) {
         console.error("Topup verification error:", err);
         setStatus("failed");
-        setMessage("Unable to verify payment");
+        setMessage("Something went wrong (not in our favor)");
       }
     }
 
@@ -72,13 +71,13 @@ export default function TopupComplete() {
 
         <p className="text-sm text-[var(--muted)]">
           {status === "checking" &&
-            "Please wait while we confirm your top-up payment."}
+            "Please wait… we’re checking if luck is on our side."}
 
           {status === "success" &&
-            "Your order has been confirmed and will be delivered automatically."}
+            "You got your top-up successfully. Sadly, our evil plans failed this time. See you in the next scam 😈"}
 
           {status === "failed" &&
-            "If the amount was deducted, delivery or refund will be processed shortly."}
+            "If money was deducted, don’t worry — delivery or refund will happen. We’ll try harder next time 😉"}
         </p>
 
         {/* ACTION */}
@@ -86,7 +85,7 @@ export default function TopupComplete() {
           onClick={() => (window.location.href = "/")}
           className="mt-6 w-full rounded-xl bg-[var(--accent)] py-3 font-semibold text-black hover:opacity-90 transition"
         >
-          Go to Home
+          Back to Scam Hub
         </button>
       </div>
     </div>
