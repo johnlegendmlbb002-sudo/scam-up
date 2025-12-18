@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FiFilter, FiX } from "react-icons/fi";
+import { FiSliders, FiX } from "react-icons/fi";
 import logo from "@/public/logo.png";
 
 export default function GamesPage() {
@@ -39,8 +39,7 @@ export default function GamesPage() {
 
   /* ================= ACTIVE FILTER COUNT ================= */
   const activeFilterCount =
-    (sort !== "az" ? 1 : 0) +
-    (hideOOS ? 1 : 0);
+    (sort !== "az" ? 1 : 0) + (hideOOS ? 1 : 0);
 
   /* ================= FILTER + SORT ================= */
   const processGames = (list) => {
@@ -52,17 +51,11 @@ export default function GamesPage() {
       );
     }
 
-    if (sort === "az") {
-      filtered.sort((a, b) =>
-        a.gameName.localeCompare(b.gameName)
-      );
-    }
-
-    if (sort === "za") {
-      filtered.sort((a, b) =>
-        b.gameName.localeCompare(a.gameName)
-      );
-    }
+    filtered.sort((a, b) =>
+      sort === "az"
+        ? a.gameName.localeCompare(b.gameName)
+        : b.gameName.localeCompare(a.gameName)
+    );
 
     return filtered;
   };
@@ -90,33 +83,35 @@ export default function GamesPage() {
     return [specialGame, ...withoutDuplicate];
   };
 
-  /* ================= GAME CARD ================= */
+  /* ================= GAME LIST ITEM ================= */
   const GameCard = ({ game }) => {
     const disabled = isOutOfStock(game.gameName);
 
     return (
       <Link
         href={disabled ? "#" : `/games/${game.gameSlug}`}
-        className={`group relative overflow-hidden rounded-2xl border 
-        bg-[var(--card)] backdrop-blur transition-all duration-300
+        className={`flex items-center gap-4 p-3 rounded-xl border
+        bg-[var(--card)] transition-all
         ${
           disabled
             ? "opacity-40 pointer-events-none"
-            : "hover:-translate-y-1 hover:shadow-xl hover:border-[var(--accent)]"
+            : "hover:border-[var(--accent)] hover:bg-[var(--card-hover)]"
         }`}
       >
-        <div className="relative h-32 w-full overflow-hidden">
+        {/* IMAGE */}
+        <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
           <Image
             src={game.gameImageId?.image || logo}
             alt={game.gameName}
             fill
-            className={`object-cover transition-transform duration-300
-            ${disabled ? "grayscale" : "group-hover:scale-110"}`}
+            className={`object-cover ${
+              disabled ? "grayscale" : ""
+            }`}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         </div>
 
-        <div className="p-3 space-y-1">
+        {/* INFO */}
+        <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold truncate">
             {game.gameName}
           </h3>
@@ -126,7 +121,7 @@ export default function GamesPage() {
 
           {!disabled && game.tagId && (
             <span
-              className="inline-block mt-2 text-[10px] px-2 py-0.5 rounded-full"
+              className="inline-block mt-1 text-[10px] px-2 py-0.5 rounded-full"
               style={{
                 background: game.tagId.tagBackground,
                 color: game.tagId.tagColor,
@@ -137,9 +132,14 @@ export default function GamesPage() {
           )}
         </div>
 
-        {disabled && (
-          <span className="absolute top-3 right-3 text-[10px] px-2 py-1 rounded-full bg-red-600 text-white">
-            Out of Stock
+        {/* STATUS */}
+        {disabled ? (
+          <span className="text-xs px-2 py-1 rounded-full bg-red-600 text-white">
+            Out
+          </span>
+        ) : (
+          <span className="text-xs font-medium text-[var(--accent)]">
+            View →
           </span>
         )}
       </Link>
@@ -148,9 +148,8 @@ export default function GamesPage() {
 
   return (
     <section className="min-h-screen px-4 py-10 bg-[var(--background)] text-[var(--foreground)]">
-
       {/* ================= TOP BAR ================= */}
-      <div className="max-w-7xl mx-auto flex justify-end items-center gap-3 mb-4 relative z-40">
+      <div className="max-w-7xl mx-auto flex justify-end gap-3 mb-6">
 
         {activeFilterCount > 0 && (
           <button
@@ -171,12 +170,14 @@ export default function GamesPage() {
           className="relative flex items-center gap-2 px-4 py-2 rounded-xl border
           bg-[var(--card)] hover:border-[var(--accent)]"
         >
-          <FiFilter />
-          Filter
+          <FiSliders />
+          <span className="text-sm font-medium">
+            Sort & Filter
+          </span>
+
           {activeFilterCount > 0 && (
-            <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px]
-            flex items-center justify-center text-[10px]
-            rounded-full bg-[var(--accent)] text-black font-bold">
+            <span className="ml-1 px-2 py-0.5 text-[10px] rounded-full
+            bg-[var(--accent)] text-black font-bold">
               {activeFilterCount}
             </span>
           )}
@@ -190,12 +191,12 @@ export default function GamesPage() {
         if (!filtered.length) return null;
 
         return (
-          <div key={i} className="max-w-7xl mx-auto mb-12">
-            <h2 className="text-xl font-bold mb-4 px-1">
+          <div key={i} className="max-w-7xl mx-auto mb-10">
+            <h2 className="text-lg font-bold mb-3 px-1">
               {cat.categoryTitle}
             </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+            <div className="flex flex-col gap-3">
               {filtered.map((game, index) => (
                 <GameCard key={index} game={game} />
               ))}
@@ -206,38 +207,46 @@ export default function GamesPage() {
 
       {/* ================= ALL GAMES ================= */}
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-xl font-bold mb-4 px-1">
+        <h2 className="text-lg font-bold mb-3 px-1">
           All Games
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+        <div className="flex flex-col gap-3">
           {processGames(games).map((game, i) => (
             <GameCard key={i} game={game} />
           ))}
         </div>
       </div>
 
-      {/* ================= FILTER MODAL ================= */}
+      {/* ================= FILTER SIDE SHEET ================= */}
       {showFilter && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center"
-          onClick={() => setShowFilter(false)}
-        >
+        <div className="fixed inset-0 z-50 flex">
           <div
-            className="bg-[var(--card)] w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-lg font-semibold mb-4">
-              Filter & Sort
-            </h3>
+            className="flex-1 bg-black/50"
+            onClick={() => setShowFilter(false)}
+          />
 
-            <div className="mb-4">
-              <p className="text-sm font-medium mb-2">Sort By</p>
+          <div className="w-80 bg-[var(--card)] p-5">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-lg font-semibold">
+                Sort & Filters
+              </h3>
+              <button onClick={() => setShowFilter(false)}>
+                <FiX />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-sm font-medium mb-2">
+                Sort
+              </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => setSort("az")}
                   className={`flex-1 py-2 rounded-xl border ${
-                    sort === "az" ? "border-[var(--accent)]" : ""
+                    sort === "az"
+                      ? "border-[var(--accent)]"
+                      : ""
                   }`}
                 >
                   A – Z
@@ -245,7 +254,9 @@ export default function GamesPage() {
                 <button
                   onClick={() => setSort("za")}
                   className={`flex-1 py-2 rounded-xl border ${
-                    sort === "za" ? "border-[var(--accent)]" : ""
+                    sort === "za"
+                      ? "border-[var(--accent)]"
+                      : ""
                   }`}
                 >
                   Z – A
@@ -257,16 +268,18 @@ export default function GamesPage() {
               <input
                 type="checkbox"
                 checked={hideOOS}
-                onChange={(e) => setHideOOS(e.target.checked)}
+                onChange={(e) =>
+                  setHideOOS(e.target.checked)
+                }
               />
-              Hide Out-of-Stock
+              Hide Out-of-Stock Games
             </label>
 
             <button
               onClick={() => setShowFilter(false)}
               className="w-full py-3 rounded-xl bg-[var(--accent)] text-black font-semibold"
             >
-              Apply Filters
+              Apply
             </button>
           </div>
         </div>

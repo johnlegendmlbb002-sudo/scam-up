@@ -20,6 +20,8 @@ const USER_MENU_LINKS = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Customer Support", href: "/dashboard" },
   { label: "Account Settings", href: "/dashboard" },
+    { label: "Leader Board", href: "/leaderboard" },
+
 ];
 
 const ROLE_LINKS = {
