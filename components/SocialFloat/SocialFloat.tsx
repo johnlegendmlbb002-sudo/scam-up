@@ -2,26 +2,26 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FaXTwitter, FaInstagram, FaDiscord, FaYoutube, FaHeart, FaShareNodes } from "react-icons/fa6";
+import { FaXTwitter, FaInstagram, FaYoutube, FaHeart, FaShareNodes ,  FaWhatsapp} from "react-icons/fa6";
 
 const socialLinks = [
   {
-    name: "Twitter",
-    icon: FaXTwitter,
-    url: "https://www.instagram.com/zynx.v1/",
+    name: "WhatsApp",
+    icon: FaWhatsapp,
+    url: "https://chat.whatsapp.com/F6zJm72CIGR27euQFZyzKa?mode=hqrt2",
     color: "hover:bg-black hover:text-white",
   },
   {
     name: "Instagram",
     icon: FaInstagram,
-    url: "https://www.instagram.com/zynx.v1/",
+    url: "https://www.instagram.com/scammers_official__",
     color: "hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 hover:text-white",
   },
 
   {
     name: "YouTube",
     icon: FaYoutube,
-    url: "https://www.instagram.com/zynx.v1/",
+    url: "https://youtube.com/@nerdgaming1284?si=LfIFELr3uKa41yZk",
     color: "hover:bg-red-600 hover:text-white",
   },
 ];

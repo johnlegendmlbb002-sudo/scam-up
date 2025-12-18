@@ -3,10 +3,11 @@
 import Link from "next/link";
 import {
   FaInstagram,
-  FaXTwitter,
   FaYoutube,
   FaHeart,
+  FaWhatsapp,
 } from "react-icons/fa6";
+
 
 /* ===================== CONFIG ===================== */
 
@@ -21,7 +22,6 @@ const BRAND = {
 
 const QUICK_LINKS = [
   { label: "Home", href: "/" },
-
   { label: "Services", href: "/services" },
   { label: "Region", href: "/region" },
 ];
@@ -36,17 +36,17 @@ const SUPPORT_LINKS = [
 const SOCIALS = [
   {
     label: "Instagram",
-    href: "https://instagram.com/zynx.v1",
+    href: "https://www.instagram.com/scammers_official__",
     icon: FaInstagram,
   },
-  {
-    label: "Twitter",
-    href: "https://instagram.com/zynx.v1",
-    icon: FaXTwitter,
+ {
+    label: "WhatsApp",
+    href: "https://chat.whatsapp.com/F6zJm72CIGR27euQFZyzKa?mode=hqrt2", // change number if needed
+    icon: FaWhatsapp,
   },
   {
     label: "YouTube",
-    href: "https://youtube.com",
+    href: "https://youtube.com/@nerdgaming1284?si=LfIFELr3uKa41yZk",
     icon: FaYoutube,
   },
 ];
