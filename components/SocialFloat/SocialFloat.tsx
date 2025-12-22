@@ -49,8 +49,8 @@ export default function SocialFloat() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "ZynxAnime",
-          text: "Check out ZynxAnime - Free Anime Wallpapers & Live Backgrounds!",
+          title: "scammers official",
+          text: "Check out scammers official!",
           url: window.location.href,
         });
       } catch (err) {
