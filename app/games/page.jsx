@@ -19,10 +19,12 @@ export default function GamesPage() {
   const SPECIAL_MLBB_GAME = "MLBB SMALL";
 
   const outOfStockGames = [
-    "PUBG Mobile",
+    // "PUBG Mobile",
     "Genshin Impact",
     "Honor Of Kings",
     "TEST 1",
+      "Wuthering of Waves",
+    "Where Winds Meet"
   ];
 
   const isOutOfStock = (name) => outOfStockGames.includes(name);
@@ -33,7 +35,13 @@ export default function GamesPage() {
       .then((res) => res.json())
       .then((data) => {
         setCategory(data?.data?.category || []);
-        setGames(data?.data?.games || []);
+        setGames(
+          (data?.data?.games || []).map((g) =>
+            g.gameName === "PUBG Mobile"
+              ? { ...g, gameName: "BGMI" }
+              : g
+          )
+        );
       });
   }, []);
 

@@ -19,7 +19,7 @@ export default function GameDetailPage() {
   const [redirecting, setRedirecting] = useState(false);
   const [viewMode, setViewMode] = useState<"slider" | "grid">("grid");
   const isBGMI =
-  game?.gameName?.toLowerCase() === "pubg mobile";
+  game?.gameName?.toLowerCase() === "pubg mobile" || game?.gameName?.toLowerCase() === "bgmi";
   
 
   /* ================= FETCH ================= */
@@ -103,7 +103,7 @@ export default function GameDetailPage() {
     //   `/games/${slug}/buy/${item.itemSlug}?${query.toString()}`
     // );
        const isBGMI =
-    game?.gameName?.toLowerCase() === "pubg mobile";
+    game?.gameName?.toLowerCase() === "pubg mobile" || game?.gameName?.toLowerCase() === "bgmi";
 
   const basePath = isBGMI
     ? `/games/pubg/${slug}/buy`
@@ -310,7 +310,7 @@ export default function GameDetailPage() {
       </div>
 
       <div className="max-w-6xl mx-auto mt-6">
-        <MLBBPurchaseGuide />
+  {isBGMI ? <div>  </div>: <MLBBPurchaseGuide />}
       </div>
     </section>
   );
