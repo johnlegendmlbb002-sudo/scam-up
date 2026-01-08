@@ -1,6 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { JSX, useState } from "react";
+import {
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiLock,
+  FiCheckCircle,
+  FiAlertCircle,
+} from "react-icons/fi";
 
 interface UserDetails {
   name: string;
@@ -45,9 +53,9 @@ export default function AccountTab({ userDetails }: AccountTabProps) {
       }
 
       setNewPass("");
-      setPassSuccess("Password updated!");
-      setTimeout(() => setPassSuccess(""), 2000);
-    } catch (error) {
+      setPassSuccess("Password updated successfully");
+      setTimeout(() => setPassSuccess(""), 2500);
+    } catch {
       setLoadingPass(false);
       setPassError("Failed to update password. Please try again.");
     }
@@ -58,82 +66,132 @@ export default function AccountTab({ userDetails }: AccountTabProps) {
 
       {/* ================= HEADER ================= */}
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-          Account Details
+        <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <FiUser />
+          Account
         </h2>
-        <p className="text-[var(--muted)] text-sm sm:text-base">
-          Manage your account information and password.
+        <p className="text-[var(--muted)] text-sm sm:text-base mt-1">
+          Manage your profile information and secure your account.
         </p>
       </div>
 
-      {/* ================= USER INFO ================= */}
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 sm:p-6">
+      {/* ================= PROFILE ================= */}
+      <div className="rounded-2xl border border-[var(--border)]
+                      bg-[var(--card)] p-5 sm:p-6">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-14 h-14 rounded-full bg-[var(--accent)]/15
+                          flex items-center justify-center
+                          text-xl font-bold text-[var(--accent)]">
+            {userDetails.name?.charAt(0) || "U"}
+          </div>
+          <div>
+            <p className="font-semibold text-lg">
+              {userDetails.name}
+            </p>
+            <p className="text-xs text-[var(--muted)]">
+              Account Holder
+            </p>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-          <InfoRow label="Name" value={userDetails.name} />
-          <InfoRow label="Email" value={userDetails.email} />
-          <InfoRow label="Phone" value={userDetails.phone} />
-
+          <InfoRow icon={<FiMail />} label="Email" value={userDetails.email} />
+          <InfoRow icon={<FiPhone />} label="Phone" value={userDetails.phone} />
         </div>
       </div>
 
-      {/* ================= PASSWORD SECTION ================= */}
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 sm:p-6">
-        <h3 className="text-lg sm:text-xl font-semibold mb-4">
-          Change Password
+      {/* ================= SECURITY ================= */}
+      <div className="rounded-2xl border border-[var(--border)]
+                      bg-[var(--card)] p-5 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2 mb-2">
+          <FiLock />
+          Security
         </h3>
+        <p className="text-sm text-[var(--muted)] mb-4">
+          Change your password to keep your account secure.
+        </p>
 
-        {/* Status */}
+        {/* Alerts */}
         {passSuccess && (
-          <div className="mb-3 rounded-xl bg-green-500/10 text-green-500 px-4 py-2 text-sm">
+          <div className="mb-4 rounded-xl bg-green-500/10
+                          text-green-500 px-4 py-2 text-sm
+                          flex items-center gap-2">
+            <FiCheckCircle />
             {passSuccess}
           </div>
         )}
         {passError && (
-          <div className="mb-3 rounded-xl bg-red-500/10 text-red-500 px-4 py-2 text-sm">
+          <div className="mb-4 rounded-xl bg-red-500/10
+                          text-red-500 px-4 py-2 text-sm
+                          flex items-center gap-2">
+            <FiAlertCircle />
             {passError}
           </div>
         )}
 
-        <div className="space-y-4">
-
+        <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="password"
-            placeholder="Enter new password"
+            placeholder="New password (min 6 characters)"
             value={newPass}
             onChange={(e) => {
               setNewPass(e.target.value);
               setPassError("");
             }}
-            className="w-full p-3 sm:p-4 rounded-xl border border-[var(--border)] bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--accent)] transition"
+            className="flex-1 p-3 sm:p-4 rounded-xl
+                       border border-[var(--border)]
+                       bg-transparent
+                       focus:outline-none
+                       focus:ring-2 focus:ring-[var(--accent)]"
           />
 
           <button
             disabled={loadingPass}
             onClick={handlePasswordUpdate}
-            className="w-full sm:w-auto sm:min-w-[220px] py-3 rounded-xl text-white font-medium transition hover:opacity-90 bg-[var(--accent)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="sm:min-w-[220px] px-6 py-3 rounded-xl
+                       bg-[var(--accent)] text-white
+                       font-medium transition
+                       hover:opacity-90
+                       disabled:opacity-50
+                       disabled:cursor-not-allowed"
           >
             {loadingPass ? (
               <span className="flex items-center justify-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                Updating...
+                <span className="w-4 h-4 border-2 border-white
+                                 border-t-transparent rounded-full animate-spin"></span>
+                Updating
               </span>
             ) : (
               "Update Password"
             )}
           </button>
-
         </div>
       </div>
     </div>
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+/* ================= SMALL HELPER ================= */
+
+function InfoRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: JSX.Element;
+  label: string;
+  value: string;
+}) {
   return (
-    <div className="flex flex-col gap-1 rounded-xl border border-[var(--border)] p-4">
-      <span className="text-xs text-[var(--muted)]">{label}</span>
-      <span className="font-medium break-all">{value}</span>
+    <div className="flex items-start gap-3 rounded-xl
+                    border border-[var(--border)] p-4">
+      <div className="text-[var(--muted)] mt-0.5">
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <p className="text-xs text-[var(--muted)]">{label}</p>
+        <p className="font-medium break-all">{value}</p>
+      </div>
     </div>
   );
 }
